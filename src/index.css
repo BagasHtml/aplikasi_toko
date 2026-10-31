@@ -1,0 +1,329 @@
+@import '@fontsource-variable/fraunces';
+@import '@fontsource-variable/plus-jakarta-sans';
+@import 'tailwindcss';
+@import 'sweetalert2/dist/sweetalert2.min.css';
+
+@theme {
+  --font-sans: 'Plus Jakarta Sans Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Fraunces Variable', ui-serif, Georgia, serif;
+
+  --color-paper: #f7f2e7;
+  --color-surface: #fffcf5;
+  --color-ink: #17251e;
+  --color-green: #1e4b38;
+  --color-green-soft: #dde7dd;
+  --color-turmeric: #d99a1c;
+  --color-clay: #b4442f;
+  --color-line: #d8ceb8;
+  --color-muted: #5f6b62;
+
+  --radius-tag: 4px;
+  --radius-card: 10px;
+  --radius-panel: 14px;
+
+  --shadow-raised: 0 1px 0 0 #d8ceb8, 0 8px 24px -18px rgb(23 37 30 / 0.35);
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-green);
+    outline-offset: 2px;
+  }
+
+  :where(a[href], button, select, summary, label[for], [role='button']) {
+    cursor: pointer;
+  }
+
+  :where(button:disabled, [aria-disabled='true']) {
+    cursor: not-allowed;
+  }
+
+  ::selection {
+    background-color: var(--color-turmeric);
+    color: var(--color-ink);
+  }
+
+  button {
+    font-family: inherit;
+  }
+}
+
+@layer components {
+  .nota-rule {
+    border-top: 1px dashed var(--color-line);
+  }
+
+  .nota-panel {
+    position: relative;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-panel);
+    background-color: var(--color-surface);
+  }
+
+  .nota-panel::before {
+    content: '';
+    position: absolute;
+    inset-inline: 14px;
+    top: -1px;
+    border-top: 1px dashed var(--color-line);
+  }
+
+  .price {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum' 1;
+    letter-spacing: -0.01em;
+  }
+
+  .skip-link {
+    position: fixed;
+    top: 8px;
+    left: 8px;
+    z-index: 100;
+    transform: translateY(-160%);
+    border-radius: var(--radius-tag);
+    background-color: var(--color-green);
+    color: var(--color-paper);
+    padding: 10px 14px;
+    font-weight: 600;
+    transition: transform 120ms ease-out;
+  }
+
+  .skip-link:focus-visible {
+    transform: translateY(0);
+  }
+}
+
+@keyframes toko-overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes toko-content-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes toko-drawer-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.dialog-overlay {
+  animation: toko-overlay-in 140ms ease-out;
+}
+
+.dialog-content {
+  animation: toko-content-in 160ms ease-out;
+}
+
+.sheet-content {
+  animation: toko-drawer-in 180ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.swal2-popup.toko-swal {
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-panel);
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  padding: 26px 24px 22px;
+  box-shadow: var(--shadow-raised);
+}
+
+.swal2-title.toko-swal-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.55rem;
+  line-height: 1.2;
+  color: var(--color-ink);
+  padding: 0;
+}
+
+.swal2-html-container.toko-swal-html {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--color-ink);
+  margin-top: 10px;
+}
+
+.swal2-html-container.toko-swal-html p {
+  margin: 0;
+}
+
+.swal2-html-container.toko-swal-html p + p {
+  margin-top: 10px;
+}
+
+.toko-swal .nota-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  border-top: 1px dashed var(--color-line);
+  padding-top: 8px;
+  margin-top: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.toko-swal .nota-line span:first-child {
+  color: var(--color-muted);
+}
+
+.toko-swal .nota-line span:last-child {
+  font-weight: 600;
+}
+
+.toko-swal .nota-copy {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin-top: 14px;
+  border: 1px dashed var(--color-line);
+  border-radius: var(--radius-tag);
+  background-color: var(--color-paper);
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.toko-swal .nota-copy-label {
+  width: 100%;
+  font-size: 0.75rem;
+  line-height: 1.3;
+  color: var(--color-muted);
+}
+
+.toko-swal .nota-copy-code {
+  flex: 1 1 auto;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--color-ink);
+}
+
+.toko-swal .nota-copy-button {
+  min-height: 44px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-tag);
+  background-color: var(--color-surface);
+  padding: 0 12px;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-green);
+  cursor: pointer;
+}
+
+.toko-swal .nota-copy-button:hover {
+  background-color: var(--color-green-soft);
+}
+
+.toko-swal .nota-copy-button:focus-visible {
+  outline: 2px solid var(--color-green);
+  outline-offset: 2px;
+}
+
+.toko-swal .nota-copy-hint {
+  margin-top: 10px;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: var(--color-muted);
+}
+
+.swal2-actions.toko-swal-actions {
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.swal2-confirm.toko-swal-confirm,
+.swal2-cancel.toko-swal-cancel {
+  min-height: 44px;
+  border-radius: var(--radius-tag);
+  padding: 0 18px;
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  font-weight: 600;
+  box-shadow: none;
+}
+
+.swal2-confirm.toko-swal-confirm {
+  background-color: var(--color-green);
+  color: var(--color-paper);
+}
+
+.swal2-confirm.toko-swal-confirm:hover {
+  background-color: #173d2d;
+}
+
+.swal2-cancel.toko-swal-cancel {
+  background-color: transparent;
+  color: var(--color-ink);
+  border: 1px solid var(--color-line);
+}
+
+.swal2-cancel.toko-swal-cancel:hover {
+  background-color: var(--color-paper);
+}
+
+.swal2-confirm.toko-swal-confirm:focus-visible,
+.swal2-cancel.toko-swal-cancel:focus-visible {
+  outline: 2px solid var(--color-green);
+  outline-offset: 2px;
+}
