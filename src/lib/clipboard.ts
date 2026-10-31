@@ -5,7 +5,7 @@ export async function copyText(text: string): Promise<boolean> {
       return true
     }
   } catch {
-    // Clipboard API ditolak, pakai jalur cadangan di bawah.
+    console.error("API gagal terhubung")
   }
 
   try {
